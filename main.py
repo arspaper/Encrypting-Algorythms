@@ -1,6 +1,7 @@
 from CaesarCipher import encryptCS, decryptCS
 from VigenereCipher import encryptVE, decryptVE
 from PolybiusSquare import encryptPS, decryptPS
+import random
 
 encryptionTable = [
     ['a', 'b', 'c', 'd', 'e', 'f'],
@@ -11,4 +12,10 @@ encryptionTable = [
     ['4', '5', '6', '7', '8', '9']
 ]
 
-encryptionCharacters = r"#$%+()'*&,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[]^_`abcdefghijklmnopqrstuvwxyz{|}~"
+encryptionCharacters = r"#$%+()'*&,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[]^_ `abcdefghijklmnopqrstuvwxyz{|}~"
+
+
+l = list(encryptionCharacters)
+random.shuffle(l)
+mydata = ''.join(l)
+
