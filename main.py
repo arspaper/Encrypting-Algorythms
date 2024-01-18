@@ -1,6 +1,6 @@
 from CaesarEncryption import encryptCS, decryptCS
 from VisionerEncryption import encryptVE, decryptVE
-from PolibianSquare import encryptPS, decryptPS
+from PolybiusSquare import encryptPS, decryptPS
 
 table = [
     ['a', 'b', 'c', 'd', 'e', 'f'],
