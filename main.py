@@ -12,6 +12,3 @@ encryptionTable = [
 ]
 
 encryptionCharacters = r"#$%+()'*&,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[]^_`abcdefghijklmnopqrstuvwxyz{|}~"
-
-
-print(decryptVE(encryptVE("BEBRIX", [1, 2, 3], mydata), [1, 2, 3], mydata))
