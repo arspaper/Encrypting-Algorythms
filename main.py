@@ -1,5 +1,5 @@
-from CaesarEncryption import encryptCS, decryptCS
-from VisionerEncryption import encryptVE, decryptVE
+from CaesarCipher import encryptCS, decryptCS
+from VigenereCipher import encryptVE, decryptVE
 from PolybiusSquare import encryptPS, decryptPS
 
 table = [
