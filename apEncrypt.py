@@ -50,7 +50,7 @@ def encryptAP(txt, key_sentence, shift, line_size, mydata):
         out_line += line_list[i] + encrypted_list[i]
 
     out_line += line_list[-1]
-
+    print(out_line)
     return out_line
 
 
@@ -67,14 +67,13 @@ def decryptAP(line, key_sentence, shift, mydata):
 
     for i in range(len(crypted_key_list)):
         ind = line.find(crypted_key_list[i])
-        a = line[ind:ind + 2 * key_length[i]]
+        a = line[ind + key_length:ind + 2 * key_length[i]]
         print(decryptCS(a, key_length[i], mydata))
         out_words.append(decryptCS(a, key_length[i], mydata))
 
     print(out_words)
 
 
-
-z = encryptAP("HELLO TO MAXSOS", "ANDREY PTITSYN IS THE GOAT", 4, 100, mydata)
+z = encryptAP("YO TEST MESSAGE", "ANDREY PTITSYN", 4, 100, mydata)
 
 decryptAP(z, "ANDREY PTITSYN IS THE GOAT", 4, mydata)
