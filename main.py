@@ -2,7 +2,7 @@ from CaesarCipher import encryptCS, decryptCS
 from VigenereCipher import encryptVE, decryptVE
 from PolybiusSquare import encryptPS, decryptPS
 
-table = [
+encryptionTable = [
     ['a', 'b', 'c', 'd', 'e', 'f'],
     ['g', 'h', 'i', 'j', 'k', 'l'],
     ['m', 'n', 'o', 'p', 'q', 'r'],
@@ -11,4 +11,7 @@ table = [
     ['4', '5', '6', '7', '8', '9']
 ]
 
-mydata = "#$%+()'*&,-./0123456789:;<=>?\@ABCDEFGHIJKLMNOPQRSTUVWXYZ[]^_`abcdefghijklmnopqrstuvwxyz{|}~"
+encryptionCharacters = r"#$%+()'*&,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[]^_`abcdefghijklmnopqrstuvwxyz{|}~"
+
+
+print(decryptVE(encryptVE("BEBRIX", [1, 2, 3], mydata), [1, 2, 3], mydata))
