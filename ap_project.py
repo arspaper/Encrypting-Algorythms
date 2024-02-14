@@ -1,7 +1,7 @@
 from PyQt5 import QtWidgets, QtGui, QtCore
 from PyQt5.QtGui import QIntValidator, QRegExpValidator
 from PyQt5.QtCore import QRegExp
-
+import random
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
@@ -18,6 +18,8 @@ class Ui_MainWindow(object):
         self.lineEdit = QtWidgets.QLineEdit(self.centralwidget)
         self.lineEdit.setGeometry(QtCore.QRect(20, 290, 281, 20))
         self.lineEdit.setObjectName("lineEdit")
+        self.lineEdit.setValidator(
+            QRegExpValidator(QRegExp("[A-Za-z0-9]+"), self.lineEdit))
         self.label_2 = QtWidgets.QLabel(self.centralwidget)
         self.label_2.setGeometry(QtCore.QRect(20, 270, 200, 16))
         self.label_2.setObjectName("label_2")
@@ -67,16 +69,18 @@ class Ui_MainWindow(object):
         self.label_2_keys.setObjectName("label_2_keys")
         self.label_2_keys.setText("Input 2 keys/Pattern")
         self.label_2_keys.setVisible(False)
-
         self.lineEdit_2_1 = QtWidgets.QLineEdit(self.centralwidget)
         self.lineEdit_2_1.setGeometry(QtCore.QRect(20, 290, 131, 20))
         self.lineEdit_2_1.setObjectName("lineEdit_2_1")
         self.lineEdit_2_1.setVisible(False)
-
+        self.lineEdit_2_1.setValidator(
+            QRegExpValidator(QRegExp("[A-Za-z0-9]+"), self.lineEdit_2_1))
         self.lineEdit_2_2 = QtWidgets.QLineEdit(self.centralwidget)
         self.lineEdit_2_2.setGeometry(QtCore.QRect(160, 290, 131, 20))
         self.lineEdit_2_2.setObjectName("lineEdit_2_2")
         self.lineEdit_2_2.setVisible(False)
+        self.lineEdit_2_2.setValidator(
+            QRegExpValidator(QRegExp("[A-Za-z0-9]+"), self.lineEdit_2_2))
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 428, 21))
@@ -93,6 +97,7 @@ class Ui_MainWindow(object):
         self.radioButton.clicked.connect(self.on_caesar_cipher_selected)
         self.radioButton_2.clicked.connect(self.on_polybius_square_selected)
         self.radioButton_3.clicked.connect(self.on_vigenere_cipher_selected)
+        self.radioButton_6.clicked.connect(self.on_zaza_cipher_selected)
         self.radioButton_5.clicked.connect(self.on_ap_cipher_selected)
         self.radioButton_6.clicked.connect(self.on_dreferd_cipher_selected)
 
@@ -136,7 +141,7 @@ class Ui_MainWindow(object):
         if not self.is_cipher_selected():
             self.show_error("Select cipher")
             return
-        if (self.radioButton.isChecked() or self.radioButton_3.isChecked()) and not key:
+        if (self.radioButton.isChecked() or self.radioButton_2.isChecked() or self.radioButton_3.isChecked() or self.radioButton_4.isChecked() or self.radioButton_5.isChecked() or self.radioButton_6.isChecked()) and not key:
             self.show_error("Enter key")
             return
         self.errorLabel.setVisible(False)
@@ -158,6 +163,9 @@ class Ui_MainWindow(object):
             key = self.lineEdit.text()
             encrypted_text = self.encryptAP(input_text, key)
             self.textBrowser.setPlainText(encrypted_text)
+        elif self.radioButton_4.isChecked():
+            self.errorLabel.setVisible(False)
+            encrypted_text = self.encryptZA(input_text, int(key))
 
         self.textBrowser.setPlainText(encrypted_text)
 
@@ -167,9 +175,10 @@ class Ui_MainWindow(object):
         if not self.is_cipher_selected():
             self.show_error("Select cipher")
             return
-        if (self.radioButton.isChecked() or self.radioButton_3.isChecked()) and not key:
+        if (self.radioButton.isChecked() or self.radioButton_2.isChecked() or self.radioButton_3.isChecked() or self.radioButton_4.isChecked() or self.radioButton_5.isChecked() or self.radioButton_6.isChecked()) and not key:
             self.show_error("Enter key")
             return
+
         self.errorLabel.setVisible(False)
         if self.radioButton.isChecked():
             self.errorLabel.setVisible(False)
@@ -181,14 +190,19 @@ class Ui_MainWindow(object):
             self.errorLabel.setVisible(False)
             decrypted_text = self.decrypt_vigenere(input_text, key)
         elif self.radioButton_6.isChecked():
+            self.errorLabel.setVisible(False)
             key = self.lineEdit_2_1.text()
             key1 = self.lineEdit_2_2.text()
             decrypted_text = self.dreferd_decrypt(input_text, int(key), int(key1))
             self.textBrowser.setPlainText(decrypted_text)
         elif self.radioButton_5.isChecked():
+            self.errorLabel.setVisible(False)
             key = self.lineEdit.text()
             decrypted_text = self.decryptAP(input_text, key)
             self.textBrowser.setPlainText(decrypted_text)
+        elif self.radioButton4.isChecked():
+            self.errorLabel.setVisible(False)
+            decrypted_text = self.decryptZA(input_text, int(key))
 
         self.textBrowser.setPlainText(decrypted_text)
 
@@ -198,7 +212,8 @@ class Ui_MainWindow(object):
             self.radioButton_2.isChecked(),
             self.radioButton_3.isChecked(),
             self.radioButton_6.isChecked(),
-            self.radioButton_5.isChecked()
+            self.radioButton_5.isChecked(),
+            self.radioButton_4.isChecked()
         ])
 
     def show_error(self, message):
@@ -244,6 +259,12 @@ class Ui_MainWindow(object):
         self.lineEdit_2_1.setVisible(True)
         self.lineEdit_2_2.setVisible(True)
     def on_ap_cipher_selected(self):
+        self.lineEdit.setVisible(True)
+        self.label_2.setVisible(True)
+        self.label_2_keys.setVisible(False)
+        self.lineEdit_2_1.setVisible(False)
+        self.lineEdit_2_2.setVisible(False)
+    def on_zaza_cipher_selected(self):
         self.lineEdit.setVisible(True)
         self.label_2.setVisible(True)
         self.label_2_keys.setVisible(False)
@@ -401,6 +422,45 @@ class Ui_MainWindow(object):
             index = (index + 1) % key_length
 
         return out_line
+
+    def encryptZA(self,txt, pattern):
+        encryptionCharacters = r"#$%+()'*&,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[]^_ `abcdefghijklmnopqrstuvwxyz{|}~"
+        l = list(encryptionCharacters)
+        random.shuffle(l)
+        mydata = ''.join(l)
+        letterlower = 'abcdefghijklmnopqrstuvwxyz'
+        letterupper = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+       # pattern = pattern.split()
+        out_txt = ""
+        shift = 0
+        for chrc in txt:
+            if chrc in letterlower:
+                chrc = chrc.upper()
+            elif chrc in letterupper:
+                chrc = chrc.lower()
+            out_txt += self.encrypt_caesar(chrc, len(pattern[shift]), mydata)
+            shift += 1
+        return out_txt
+
+    def decryptZA(self,txt, pattern):
+        encryptionCharacters = r"#$%+()'*&,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[]^_ `abcdefghijklmnopqrstuvwxyz{|}~"
+        l = list(encryptionCharacters)
+        random.shuffle(l)
+        mydata = ''.join(l)
+        letterlower = 'abcdefghijklmnopqrstuvwxyz'
+        letterupper = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+        pattern = pattern.split()
+        out_txt = ""
+        shift = 0
+        for chrc in txt:
+            if chrc in letterlower:
+                chrc = chrc.upper()
+            elif chrc in letterupper:
+                chrc = chrc.lower()
+
+            out_txt += self.decrypt_caesar(chrc, len(pattern[shift]), mydata)
+            shift += 1
+        return out_txt
 
 
 if __name__ == "__main__":
