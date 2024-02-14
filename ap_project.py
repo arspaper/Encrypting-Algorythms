@@ -19,7 +19,7 @@ class Ui_MainWindow(object):
         self.lineEdit.setGeometry(QtCore.QRect(20, 290, 281, 20))
         self.lineEdit.setObjectName("lineEdit")
         self.label_2 = QtWidgets.QLabel(self.centralwidget)
-        self.label_2.setGeometry(QtCore.QRect(20, 270, 101, 16))
+        self.label_2.setGeometry(QtCore.QRect(20, 270, 200, 16))
         self.label_2.setObjectName("label_2")
         self.label_3 = QtWidgets.QLabel(self.centralwidget)
         self.label_3.setGeometry(QtCore.QRect(20, 320, 71, 16))
@@ -37,31 +37,46 @@ class Ui_MainWindow(object):
         self.pushButton_3.setGeometry(QtCore.QRect(310, 430, 101, 141))
         self.pushButton_3.setObjectName("pushButton_3")
         self.radioButton = QtWidgets.QRadioButton(self.centralwidget)
-        self.radioButton.setGeometry(QtCore.QRect(310, 30, 91, 17))
+        self.radioButton.setGeometry(QtCore.QRect(310, 30, 200, 17))
         self.radioButton.setObjectName("radioButton")
         self.radioButton_2 = QtWidgets.QRadioButton(self.centralwidget)
-        self.radioButton_2.setGeometry(QtCore.QRect(310, 50, 101, 17))
+        self.radioButton_2.setGeometry(QtCore.QRect(310, 50, 200, 17))
         self.radioButton_2.setObjectName("radioButton_2")
         self.radioButton_3 = QtWidgets.QRadioButton(self.centralwidget)
-        self.radioButton_3.setGeometry(QtCore.QRect(310, 70, 101, 17))
+        self.radioButton_3.setGeometry(QtCore.QRect(310, 70, 200, 17))
         self.radioButton_3.setObjectName("radioButton_3")
         self.radioButton_4 = QtWidgets.QRadioButton(self.centralwidget)
-        self.radioButton_4.setGeometry(QtCore.QRect(310, 90, 91, 17))
+        self.radioButton_4.setGeometry(QtCore.QRect(310, 90, 200, 17))
         self.radioButton_4.setObjectName("radioButton_4")
         self.radioButton_5 = QtWidgets.QRadioButton(self.centralwidget)
-        self.radioButton_5.setGeometry(QtCore.QRect(310, 110, 91, 17))
+        self.radioButton_5.setGeometry(QtCore.QRect(310, 110, 200, 17))
         self.radioButton_5.setObjectName("radioButton_5")
         self.radioButton_6 = QtWidgets.QRadioButton(self.centralwidget)
-        self.radioButton_6.setGeometry(QtCore.QRect(310, 130, 111, 17))
+        self.radioButton_6.setGeometry(QtCore.QRect(310, 130, 200, 17))
         self.radioButton_6.setObjectName("radioButton_6")
         self.label_4 = QtWidgets.QLabel(self.centralwidget)
-        self.label_4.setGeometry(QtCore.QRect(310, 10, 81, 21))
+        self.label_4.setGeometry(QtCore.QRect(310, 10, 200, 21))
         self.label_4.setObjectName("label_4")
         self.errorLabel = QtWidgets.QLabel(self.centralwidget)
         self.errorLabel.setGeometry(QtCore.QRect(20, 580, 281, 20))
         self.errorLabel.setObjectName("errorLabel")
         self.errorLabel.setStyleSheet("color: red")
         self.errorLabel.setVisible(False)
+        self.label_2_keys = QtWidgets.QLabel(self.centralwidget)
+        self.label_2_keys.setGeometry(QtCore.QRect(20, 270, 141, 16))
+        self.label_2_keys.setObjectName("label_2_keys")
+        self.label_2_keys.setText("Input 2 keys/Pattern")
+        self.label_2_keys.setVisible(False)
+
+        self.lineEdit_2_1 = QtWidgets.QLineEdit(self.centralwidget)
+        self.lineEdit_2_1.setGeometry(QtCore.QRect(20, 290, 131, 20))
+        self.lineEdit_2_1.setObjectName("lineEdit_2_1")
+        self.lineEdit_2_1.setVisible(False)
+
+        self.lineEdit_2_2 = QtWidgets.QLineEdit(self.centralwidget)
+        self.lineEdit_2_2.setGeometry(QtCore.QRect(160, 290, 131, 20))
+        self.lineEdit_2_2.setObjectName("lineEdit_2_2")
+        self.lineEdit_2_2.setVisible(False)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 428, 21))
@@ -78,7 +93,7 @@ class Ui_MainWindow(object):
         self.radioButton.clicked.connect(self.on_caesar_cipher_selected)
         self.radioButton_2.clicked.connect(self.on_polybius_square_selected)
         self.radioButton_3.clicked.connect(self.on_vigenere_cipher_selected)
-
+        self.radioButton_5.clicked.connect(self.on_ap_cipher_selected)
         self.radioButton_6.clicked.connect(self.on_dreferd_cipher_selected)
 
 
@@ -88,7 +103,7 @@ class Ui_MainWindow(object):
         plain_text = self.plainTextEdit.toPlainText()
 
         new_text = ''.join(
-            char if char.isalpha() and char.isascii() else '' for char in
+            char if (char.isalnum() or char == '-' or char == " ") and char.isascii() else '' for char in
             plain_text)
         if new_text != plain_text:
             cursor.movePosition(QtGui.QTextCursor.Start)
@@ -110,9 +125,9 @@ class Ui_MainWindow(object):
         self.radioButton.setText(_translate("MainWindow", "Caesar Cipher"))
         self.radioButton_2.setText(_translate("MainWindow", "Polybius Square"))
         self.radioButton_3.setText(_translate("MainWindow", "Vigenere Cipher"))
-        self.radioButton_4.setText(_translate("MainWindow", "“Zaza” Ciipher"))
-        self.radioButton_5.setText(_translate("MainWindow", "“ap” Ciipher"))
-        self.radioButton_6.setText(_translate("MainWindow", "“Dreferd” Ciipher"))
+        self.radioButton_4.setText(_translate("MainWindow", "“Zaza” Cipher"))
+        self.radioButton_5.setText(_translate("MainWindow", "“ap” Cipher"))
+        self.radioButton_6.setText(_translate("MainWindow", "“Dreferd” Cipher"))
         self.label_4.setText(_translate("MainWindow", "Choose Cipher"))
 
     def on_encrypt_button_clicked(self):
@@ -134,8 +149,14 @@ class Ui_MainWindow(object):
         elif self.radioButton_3.isChecked():
             self.errorLabel.setVisible(False)
             encrypted_text = self.encrypt_vigenere(input_text, key)
-        # elif self.radioButton_6.isChecked():
-        #     encrypted_text = self.dreferd_encrypt(input_text, key, key1)
+        elif self.radioButton_6.isChecked():
+            key = self.lineEdit_2_1.text()
+            key1 = self.lineEdit_2_2.text()
+            encrypted_text = self.dreferd_encrypt(input_text, int(key), int(key1))
+            self.textBrowser.setPlainText(encrypted_text)
+        elif self.radioButton_5.isChecked():
+            key = self.lineEdit.text()
+            encrypted_text = self.encryptAP(input_text, key)
             self.textBrowser.setPlainText(encrypted_text)
 
         self.textBrowser.setPlainText(encrypted_text)
@@ -159,8 +180,14 @@ class Ui_MainWindow(object):
         elif self.radioButton_3.isChecked():
             self.errorLabel.setVisible(False)
             decrypted_text = self.decrypt_vigenere(input_text, key)
-        # elif self.radioButton_6.isChecked():
-        #     decrypted_text = self.dreferd_decrypt(input_text, key, key1)
+        elif self.radioButton_6.isChecked():
+            key = self.lineEdit_2_1.text()
+            key1 = self.lineEdit_2_2.text()
+            decrypted_text = self.dreferd_decrypt(input_text, int(key), int(key1))
+            self.textBrowser.setPlainText(decrypted_text)
+        elif self.radioButton_5.isChecked():
+            key = self.lineEdit.text()
+            decrypted_text = self.decryptAP(input_text, key)
             self.textBrowser.setPlainText(decrypted_text)
 
         self.textBrowser.setPlainText(decrypted_text)
@@ -170,7 +197,8 @@ class Ui_MainWindow(object):
             self.radioButton.isChecked(),
             self.radioButton_2.isChecked(),
             self.radioButton_3.isChecked(),
-            self.radioButton_6.isChecked()
+            self.radioButton_6.isChecked(),
+            self.radioButton_5.isChecked()
         ])
 
     def show_error(self, message):
@@ -193,19 +221,34 @@ class Ui_MainWindow(object):
     def on_caesar_cipher_selected(self):
         self.lineEdit.setVisible(True)
         self.label_2.setVisible(True)
-
+        self.label_2_keys.setVisible(False)
+        self.lineEdit_2_1.setVisible(False)
+        self.lineEdit_2_2.setVisible(False)
     def on_polybius_square_selected(self):
         self.lineEdit.setVisible(False)
         self.label_2.setVisible(False)
-
+        self.label_2_keys.setVisible(False)
+        self.lineEdit_2_1.setVisible(False)
+        self.lineEdit_2_2.setVisible(False)
     def on_vigenere_cipher_selected(self):
         self.lineEdit.setVisible(True)
         self.label_2.setVisible(True)
-
+        self.label_2_keys.setVisible(False)
+        self.lineEdit_2_1.setVisible(False)
+        self.lineEdit_2_2.setVisible(False)
     def on_dreferd_cipher_selected(self):
-        self.lineEdit_2.setVisible(True)
-        self.label_2.setVisible(True)
         self.label_3.setVisible(True)
+        self.lineEdit.setVisible(False)
+        self.label_2.setVisible(False)
+        self.label_2_keys.setVisible(True)
+        self.lineEdit_2_1.setVisible(True)
+        self.lineEdit_2_2.setVisible(True)
+    def on_ap_cipher_selected(self):
+        self.lineEdit.setVisible(True)
+        self.label_2.setVisible(True)
+        self.label_2_keys.setVisible(False)
+        self.lineEdit_2_1.setVisible(False)
+        self.lineEdit_2_2.setVisible(False)
 
     def encrypt_caesar(self, text, key):
         result = ''
@@ -287,7 +330,7 @@ class Ui_MainWindow(object):
 
         return result
 
-    def dreferd_encrypt(text, key1, key2):
+    def dreferd_encrypt(self,text, key1, key2):
         encrypt_numbers = []
         for i, char in enumerate(text):
             ascii_code = ord(char)
@@ -299,7 +342,7 @@ class Ui_MainWindow(object):
         encrypt_numbers = '-'.join(encrypt_numbers)
         return encrypt_numbers
 
-    def dreferd_decrypt(encrypt_numbers, key1, key2):
+    def dreferd_decrypt(self,encrypt_numbers, key1, key2):
         encrypt_numbers = encrypt_numbers.split('-')
 
         decrypted_text = ""
@@ -312,6 +355,52 @@ class Ui_MainWindow(object):
 
             decrypted_text += chr(decrypted_code)
         return decrypted_text
+
+    def encryptAP(self,text, key):
+        if not key.isascii() or not text.isascii():
+            return "NOT ASCII"
+
+        text = text.upper()
+        key = key.upper()
+        out_line = ""
+        key_length = len(key)
+        shifts = [ord(chrc) % 26 for chrc in key]
+        index = 0
+
+        for chrc in text:
+            shift = shifts[index]
+            if chrc.isalpha():
+                out_line += chr((ord(chrc) - 65 + shift) % 26 + 65)
+            elif chrc.isdigit():
+                out_line += chr((ord(chrc) - 48 + shift) % 10 + 48)
+            else:
+                out_line += chrc
+            index = (index + 1) % key_length
+
+        return out_line
+
+    def decryptAP(self,text, key):
+        if not key.isascii() or not text.isascii():
+            return "NOT ASCII"
+
+        text = text.upper()
+        key = key.upper()
+        out_line = ""
+        key_length = len(key)
+        shifts = [ord(chrc) % 26 for chrc in key]
+        index = 0
+
+        for chrc in text:
+            shift = shifts[index]
+            if chrc.isalpha():
+                out_line += chr((ord(chrc) - 65 - shift + 26) % 26 + 65)
+            elif chrc.isdigit():
+                out_line += chr((ord(chrc) - 48 - shift + 10) % 10 + 48)
+            else:
+                out_line += chrc
+            index = (index + 1) % key_length
+
+        return out_line
 
 
 if __name__ == "__main__":
