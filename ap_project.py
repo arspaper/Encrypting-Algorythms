@@ -144,8 +144,6 @@ class Ui_MainWindow(object):
         if (self.radioButton.isChecked() or self.radioButton_2.isChecked() or self.radioButton_3.isChecked() or self.radioButton_4.isChecked() or self.radioButton_5.isChecked() or self.radioButton_6.isChecked()) and not key:
             self.show_error("Enter key")
             return
-        print("input_text:", repr(input_text))
-        print("key:", repr(key))
         if not input_text:
             self.show_error("Enter input text")
             return
@@ -183,8 +181,8 @@ class Ui_MainWindow(object):
         if (self.radioButton.isChecked() or self.radioButton_2.isChecked() or self.radioButton_3.isChecked() or self.radioButton_4.isChecked() or self.radioButton_5.isChecked() or self.radioButton_6.isChecked()) and not key:
             self.show_error("Enter key")
             return
-        if not input_text and not key:
-            self.show_error("Enter input text and key")
+        if not input_text:
+            self.show_error("Enter input text")
             return
         self.errorLabel.setVisible(False)
         if self.radioButton.isChecked():
