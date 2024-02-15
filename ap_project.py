@@ -138,12 +138,16 @@ class Ui_MainWindow(object):
     def on_encrypt_button_clicked(self):
         input_text = self.plainTextEdit.toPlainText().upper()
         key = self.lineEdit.text()
+        if input_text.isdigit() and input_text[0].isdigit():
+            self.show_error(
+                "Unable to encrypt: Input text contains only digits with the first character being a digit.")
+            return
         if not self.is_cipher_selected():
             self.show_error("Select cipher")
             return
-        if (self.radioButton.isChecked() or self.radioButton_2.isChecked() or self.radioButton_3.isChecked() or self.radioButton_4.isChecked() or self.radioButton_5.isChecked() or self.radioButton_6.isChecked()) and not key:
-            self.show_error("Enter key")
-            return
+        # if (self.radioButton.isChecked() or self.radioButton_2.isChecked() or self.radioButton_3.isChecked() or self.radioButton_4.isChecked() or self.radioButton_5.isChecked() or self.radioButton_6.isChecked()) and not key:
+        #     self.show_error("Enter key")
+        #     return
         if not input_text:
             self.show_error("Enter input text")
             return
@@ -158,6 +162,7 @@ class Ui_MainWindow(object):
             self.errorLabel.setVisible(False)
             encrypted_text = self.encrypt_vigenere(input_text, key)
         elif self.radioButton_6.isChecked():
+            self.errorLabel.setVisible(False)
             key = self.lineEdit_2_1.text()
             key1 = self.lineEdit_2_2.text()
             encrypted_text = self.dreferd_encrypt(input_text, int(key), int(key1))
@@ -178,11 +183,11 @@ class Ui_MainWindow(object):
         if not self.is_cipher_selected():
             self.show_error("Select cipher")
             return
-        if (self.radioButton.isChecked() or self.radioButton_2.isChecked() or self.radioButton_3.isChecked() or self.radioButton_4.isChecked() or self.radioButton_5.isChecked() or self.radioButton_6.isChecked()) and not key:
-            self.show_error("Enter key")
-            return
-        if not input_text:
-            self.show_error("Enter input text")
+        # if (self.radioButton.isChecked() or self.radioButton_2.isChecked() or self.radioButton_3.isChecked() or self.radioButton_4.isChecked() or self.radioButton_5.isChecked() or self.radioButton_6.isChecked()) and not key:
+        #     self.show_error("Enter key")
+        #     return
+        if not input_text and not key:
+            self.show_error("Enter input text and key")
             return
         self.errorLabel.setVisible(False)
         if self.radioButton.isChecked():
@@ -205,7 +210,7 @@ class Ui_MainWindow(object):
             key = self.lineEdit.text()
             decrypted_text = self.decryptAP(input_text, key)
             self.textBrowser.setPlainText(decrypted_text)
-        elif self.radioButton4.isChecked():
+        elif self.radioButton_4.isChecked():
             self.errorLabel.setVisible(False)
             decrypted_text = self.decryptZA(input_text, int(key))
 
@@ -237,6 +242,9 @@ class Ui_MainWindow(object):
         self.plainTextEdit.clear()
         self.lineEdit.clear()
         self.textBrowser.clear()
+        self.lineEdit_2_1.clear()
+        self.lineEdit_2_2.clear()
+        self.errorLabel.setVisible(False)
 
     def on_caesar_cipher_selected(self):
         self.lineEdit.setVisible(True)
@@ -356,7 +364,7 @@ class Ui_MainWindow(object):
 
         return result
 
-    def dreferd_encrypt(self,text, key1, key2):
+    def dreferd_encrypt(self, text, key1, key2):
         encrypt_numbers = []
         for i, char in enumerate(text):
             ascii_code = ord(char)
@@ -368,7 +376,7 @@ class Ui_MainWindow(object):
         encrypt_numbers = '-'.join(encrypt_numbers)
         return encrypt_numbers
 
-    def dreferd_decrypt(self,encrypt_numbers, key1, key2):
+    def dreferd_decrypt(self, encrypt_numbers, key1, key2):
         encrypt_numbers = encrypt_numbers.split('-')
 
         decrypted_text = ""
@@ -428,14 +436,14 @@ class Ui_MainWindow(object):
 
         return out_line
 
-    def encryptZA(self,txt, pattern):
+    def encryptZA(self, txt, pattern):
         encryptionCharacters = r"#$%+()'*&,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[]^_ `abcdefghijklmnopqrstuvwxyz{|}~"
         l = list(encryptionCharacters)
         random.shuffle(l)
         mydata = ''.join(l)
         letterlower = 'abcdefghijklmnopqrstuvwxyz'
         letterupper = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
-       # pattern = pattern.split()
+        #pattern = pattern.split()
         out_txt = ""
         shift = 0
         for chrc in txt:
@@ -447,14 +455,14 @@ class Ui_MainWindow(object):
             shift += 1
         return out_txt
 
-    def decryptZA(self,txt, pattern):
+    def decryptZA(self, txt, pattern):
         encryptionCharacters = r"#$%+()'*&,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[]^_ `abcdefghijklmnopqrstuvwxyz{|}~"
         l = list(encryptionCharacters)
         random.shuffle(l)
         mydata = ''.join(l)
         letterlower = 'abcdefghijklmnopqrstuvwxyz'
         letterupper = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
-        pattern = pattern.split()
+        # pattern = pattern.split()
         out_txt = ""
         shift = 0
         for chrc in txt:
@@ -462,11 +470,9 @@ class Ui_MainWindow(object):
                 chrc = chrc.upper()
             elif chrc in letterupper:
                 chrc = chrc.lower()
-
             out_txt += self.decrypt_caesar(chrc, len(pattern[shift]), mydata)
             shift += 1
         return out_txt
-
 
 if __name__ == "__main__":
     import sys
