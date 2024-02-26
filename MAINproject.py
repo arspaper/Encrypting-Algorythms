@@ -138,27 +138,39 @@ class Ui_MainWindow(object):
     def on_encrypt_button_clicked(self):
         input_text = self.plainTextEdit.toPlainText().upper()
         key = self.lineEdit.text()
-        if input_text.isdigit() and input_text[0].isdigit():
-            self.show_error(
-                "Unable to encrypt: Input text contains only digits with the first character being a digit.")
-            return
         if not self.is_cipher_selected():
             self.show_error("Select cipher")
             return
-        # if (self.radioButton.isChecked() or self.radioButton_2.isChecked() or self.radioButton_3.isChecked() or self.radioButton_4.isChecked() or self.radioButton_5.isChecked() or self.radioButton_6.isChecked()) and not key:
-        #     self.show_error("Enter key")
-        #     return
+        if self.radioButton.isChecked() and (not key.isdigit()):
+            self.show_error(
+                "Invalid key value. The key must consist of digits.")
+            return
+        if (self.radioButton.isChecked() or self.radioButton_3.isChecked() or self.radioButton_4.isChecked() or self.radioButton_5.isChecked() or self.radioButton_6.isChecked()) and not key:
+            self.show_error("Enter key")
+            return
         if not input_text:
             self.show_error("Enter input text")
             return
         self.errorLabel.setVisible(False)
         if self.radioButton.isChecked():
+            if input_text[0].isdigit():
+                self.show_error(
+                    "Unable to encrypt: Input text contains only digits with the first character being a digit.")
+                return
             self.errorLabel.setVisible(False)
             encrypted_text = self.encrypt_caesar(input_text, int(key))
         elif self.radioButton_2.isChecked():
+            if input_text[0].isdigit():
+                self.show_error(
+                    "Unable to encrypt: Input text contains only digits with the first character being a digit.")
+                return
             self.errorLabel.setVisible(False)
             encrypted_text = self.polybius_cipher(input_text)
         elif self.radioButton_3.isChecked():
+            if input_text[0].isdigit():
+                self.show_error(
+                    "Unable to encrypt: Input text contains only digits with the first character being a digit.")
+                return
             self.errorLabel.setVisible(False)
             encrypted_text = self.encrypt_vigenere(input_text, key)
         elif self.radioButton_6.isChecked():
@@ -183,20 +195,32 @@ class Ui_MainWindow(object):
         if not self.is_cipher_selected():
             self.show_error("Select cipher")
             return
-        # if (self.radioButton.isChecked() or self.radioButton_2.isChecked() or self.radioButton_3.isChecked() or self.radioButton_4.isChecked() or self.radioButton_5.isChecked() or self.radioButton_6.isChecked()) and not key:
-        #     self.show_error("Enter key")
-        #     return
-        if not input_text and not key:
-            self.show_error("Enter input text and key")
+        if self.radioButton.isChecked() and (not key.isdigit()):
+            self.show_error(
+                "Invalid key value. The key must consist of digits.")
+            return
+        if (self.radioButton.isChecked()  or self.radioButton_3.isChecked() or self.radioButton_4.isChecked() or self.radioButton_5.isChecked() or self.radioButton_6.isChecked()) and not key:
+            self.show_error("Enter key")
+            return
+        if not input_text:
+            self.show_error("Enter input text")
             return
         self.errorLabel.setVisible(False)
         if self.radioButton.isChecked():
+            if input_text[0].isdigit():
+                self.show_error(
+                    "Unable to encrypt: Input text contains only digits with the first character being a digit.")
+                return
             self.errorLabel.setVisible(False)
             decrypted_text = self.decrypt_caesar(input_text, int(key))
         elif self.radioButton_2.isChecked():
             self.errorLabel.setVisible(False)
             decrypted_text = self.polybius_decipher(input_text)
         elif self.radioButton_3.isChecked():
+            if input_text[0].isdigit():
+                self.show_error(
+                    "Unable to encrypt: Input text contains only digits with the first character being a digit.")
+                return
             self.errorLabel.setVisible(False)
             decrypted_text = self.decrypt_vigenere(input_text, key)
         elif self.radioButton_6.isChecked():
