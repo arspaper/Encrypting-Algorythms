@@ -145,7 +145,7 @@ class Ui_MainWindow(object):
             self.show_error(
                 "Invalid key value. The key must consist of digits.")
             return
-        if (self.radioButton.isChecked() or self.radioButton_3.isChecked() or self.radioButton_4.isChecked() or self.radioButton_5.isChecked() or self.radioButton_6.isChecked()) and not key:
+        if (self.radioButton.isChecked() or self.radioButton_3.isChecked() or self.radioButton_4.isChecked() or self.radioButton_5.isChecked()) and not key:
             self.show_error("Enter key")
             return
         if not input_text:
@@ -177,6 +177,9 @@ class Ui_MainWindow(object):
             self.errorLabel.setVisible(False)
             key = self.lineEdit_2_1.text()
             key1 = self.lineEdit_2_2.text()
+            if (not key or not key1) or (not key and not key1):
+                self.show_error("Enter key")
+                return
             encrypted_text = self.dreferd_encrypt(input_text, int(key), int(key1))
             self.textBrowser.setPlainText(encrypted_text)
         elif self.radioButton_5.isChecked():
@@ -199,7 +202,7 @@ class Ui_MainWindow(object):
             self.show_error(
                 "Invalid key value. The key must consist of digits.")
             return
-        if (self.radioButton.isChecked()  or self.radioButton_3.isChecked() or self.radioButton_4.isChecked() or self.radioButton_5.isChecked() or self.radioButton_6.isChecked()) and not key:
+        if (self.radioButton.isChecked()  or self.radioButton_3.isChecked() or self.radioButton_4.isChecked() or self.radioButton_5.isChecked()) and not key:
             self.show_error("Enter key")
             return
         if not input_text:
@@ -209,17 +212,21 @@ class Ui_MainWindow(object):
         if self.radioButton.isChecked():
             if input_text[0].isdigit():
                 self.show_error(
-                    "Unable to encrypt: Input text contains only digits with the first character being a digit.")
+                    "Unable to decrypt: Input text contains only digits with the first character being a digit.")
                 return
             self.errorLabel.setVisible(False)
             decrypted_text = self.decrypt_caesar(input_text, int(key))
         elif self.radioButton_2.isChecked():
             self.errorLabel.setVisible(False)
+            if input_text[0].isalpha():
+                self.show_error(
+                                "Unable to decrypt: Input text contains only letters with the first character being a letter")
+                return
             decrypted_text = self.polybius_decipher(input_text)
         elif self.radioButton_3.isChecked():
             if input_text[0].isdigit():
                 self.show_error(
-                    "Unable to encrypt: Input text contains only digits with the first character being a digit.")
+                    "Unable to decrypt: Input text contains only digits with the first character being a digit.")
                 return
             self.errorLabel.setVisible(False)
             decrypted_text = self.decrypt_vigenere(input_text, key)
@@ -227,6 +234,13 @@ class Ui_MainWindow(object):
             self.errorLabel.setVisible(False)
             key = self.lineEdit_2_1.text()
             key1 = self.lineEdit_2_2.text()
+            if (not key or not key1) or (not key and not key1):
+                self.show_error("Enter key")
+                return
+            if input_text[0].isdigit():
+                self.show_error(
+                    "Unable to decrypt: Input text contains only digits with the first character being a digit.")
+                return
             decrypted_text = self.dreferd_decrypt(input_text, int(key), int(key1))
             self.textBrowser.setPlainText(decrypted_text)
         elif self.radioButton_5.isChecked():
