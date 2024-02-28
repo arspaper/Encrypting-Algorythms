@@ -97,7 +97,7 @@ class Ui_MainWindow(object):
         self.radioButton.clicked.connect(self.on_caesar_cipher_selected)
         self.radioButton_2.clicked.connect(self.on_polybius_square_selected)
         self.radioButton_3.clicked.connect(self.on_vigenere_cipher_selected)
-        self.radioButton_6.clicked.connect(self.on_zaza_cipher_selected)
+        self.radioButton_4.clicked.connect(self.on_zaza_cipher_selected)
         self.radioButton_5.clicked.connect(self.on_ap_cipher_selected)
         self.radioButton_6.clicked.connect(self.on_dreferd_cipher_selected)
 
@@ -188,9 +188,9 @@ class Ui_MainWindow(object):
             if (not key or not key1) or (not key and not key1):
                 self.show_error("Enter key")
                 return
-            if (not self.has_digit(key) or not self.has_digit(key1)) or (not self.has_digit(key) and not self.has_digit(key1)):
+            if (not key.isdigit() or not key1.isdigit()) or (not key.isdigit() and not key1.isdigit()):
                 self.show_error(
-                    "Invalid key value. The key must consist of letters.")
+                    "Invalid key value. The keys must consist of digits.")
                 return
             encrypted_text = self.dreferd_encrypt(input_text, int(key), int(key1))
             self.textBrowser.setPlainText(encrypted_text)
@@ -204,7 +204,17 @@ class Ui_MainWindow(object):
             self.textBrowser.setPlainText(encrypted_text)
         elif self.radioButton_4.isChecked():
             self.errorLabel.setVisible(False)
-            encrypted_text = self.encryptZA(input_text, int(key))
+            key = self.lineEdit.text()
+            key_value = len(key)
+            if (self.has_digit(key)):
+                self.show_error(
+                    "Invalid key value. The key must consist of letters.")
+                return
+            if self.has_digit(input_text):
+                self.show_error(
+                    "Unable to encrypt: Input text contains only digits with the first character being a digit.")
+                return
+            encrypted_text = self.encryptZA(input_text,key_value)
 
         self.textBrowser.setPlainText(encrypted_text)
 
@@ -242,7 +252,7 @@ class Ui_MainWindow(object):
             decrypted_text = self.decrypt_caesar(input_text, int(key))
         elif self.radioButton_2.isChecked():
             self.errorLabel.setVisible(False)
-            if input_text.isalpha():
+            if self.has_letter(input_text):
                 self.show_error(
                                 "Unable to decrypt: Input text contains only letters with the first character being a letter")
                 return
@@ -262,9 +272,9 @@ class Ui_MainWindow(object):
                 self.show_error(
                     "Unable to decrypt: Input text contains only letters with the first character being a letter")
                 return
-            if (not self.has_digit(key) or not self.has_digit(key1)) or (not self.has_digit(key) and not self.has_digit(key1)):
+            if (not key.isdigit() or not key1.isdigit()) or (not key.isdigit() and not key1.isdigit()):
                 self.show_error(
-                    "Invalid key value. The key must consist of letters.")
+                    "Invalid key value. The keys must consist of digits.")
                 return
             if (not key or not key1) or (not key and not key1):
                 self.show_error("Enter key")
@@ -281,13 +291,26 @@ class Ui_MainWindow(object):
             decrypted_text = self.decryptAP(input_text, key)
             self.textBrowser.setPlainText(decrypted_text)
         elif self.radioButton_4.isChecked():
+            key = self.lineEdit.text()
+            key_value = len(key)
             self.errorLabel.setVisible(False)
-            decrypted_text = self.decryptZA(input_text, int(key))
+            if (self.has_digit(key)):
+                self.show_error(
+                    "Invalid key value. The key must consist of letters.")
+                return
+            if self.has_digit(input_text):
+                self.show_error(
+                    "Unable to decrypt: Input text contains only digits with the first character being a digit.")
+                return
+            decrypted_text = self.decryptZA(input_text, key_value)
 
         self.textBrowser.setPlainText(decrypted_text)
 
     def has_digit(self,input_string):
         return any(char.isdigit() for char in input_string)
+
+    def has_letter(self,input_string):
+        return any(char.isalpha() for char in input_string)
 
     def is_cipher_selected(self):
         return any([
@@ -510,43 +533,49 @@ class Ui_MainWindow(object):
 
         return out_line
 
-    def encryptZA(self, txt, pattern):
+    def encryptZA(self, txt, key):
         encryptionCharacters = r"#$%+()'*&,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[]^_ `abcdefghijklmnopqrstuvwxyz{|}~"
         l = list(encryptionCharacters)
         random.shuffle(l)
         mydata = ''.join(l)
         letterlower = 'abcdefghijklmnopqrstuvwxyz'
         letterupper = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
-        #pattern = pattern.split()
         out_txt = ""
         shift = 0
+
         for chrc in txt:
             if chrc in letterlower:
                 chrc = chrc.upper()
             elif chrc in letterupper:
                 chrc = chrc.lower()
-            out_txt += self.encrypt_caesar(chrc, len(pattern[shift]), mydata)
+            out_txt += self.encrypt_caesar(chrc,
+                                           key)
             shift += 1
+
         return out_txt
 
-    def decryptZA(self, txt, pattern):
+    def decryptZA(self, txt, key):
+
         encryptionCharacters = r"#$%+()'*&,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[]^_ `abcdefghijklmnopqrstuvwxyz{|}~"
         l = list(encryptionCharacters)
         random.shuffle(l)
         mydata = ''.join(l)
         letterlower = 'abcdefghijklmnopqrstuvwxyz'
         letterupper = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
-        # pattern = pattern.split()
         out_txt = ""
         shift = 0
+
         for chrc in txt:
             if chrc in letterlower:
                 chrc = chrc.upper()
             elif chrc in letterupper:
                 chrc = chrc.lower()
-            out_txt += self.decrypt_caesar(chrc, len(pattern[shift]), mydata)
+            out_txt += self.decrypt_caesar(chrc,
+                                           key)
             shift += 1
+
         return out_txt
+
 
 if __name__ == "__main__":
     import sys
